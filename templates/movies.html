@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <link rel="stylesheet" href="/static/styles/main.css">
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search movies..." required>
+        <button id="search-button">Search</button>
+    </div>
+    
+    <div id="movies-grid" class="movies-grid">
+        <!-- Results will be inserted here -->
+    </div>
+
+    <script>
+        document.getElementById('search-button').addEventListener('click', function() {
+            const query = document.getElementById('search-input').value.trim();
+            if (!query) return;
+
+            fetch(`/api/search/movie?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const grid = document.getElementById('movies-grid');
+                    grid.innerHTML = '';
+                    data.forEach(movie => {
+                        const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '/static/placeholder.jpg';
+                        const year = movie.release_date ? new Date(movie.release_date).getFullYear() : 'N/A';
+                        const card = document.createElement('a');
+                        card.className = 'movie-card';
+                        card.href = `/movieplayer/movie/${movie.id}`;
+                        card.innerHTML = `
+                            <img src="${posterUrl}" alt="${movie.title}" class="poster">
+                            <div class="movie-info">
+                                <h3>${movie.title}</h3>
+                                <div class="year">${year}</div>
+                                <p class="overview">${movie.overview || 'No description available.'}</p>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
