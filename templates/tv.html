@@ -45,6 +45,11 @@
                 })
                 .catch(error => console.error('Error:', error));
         });
+        document.getElementById('search-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('search-button').click();
+            }
+        });
     </script>
 </body>
 </html>

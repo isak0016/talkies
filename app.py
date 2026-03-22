@@ -36,12 +36,46 @@ def search_movie_route():
     results = search_movie(query)
     return jsonify(results)
 
+@app.route("/api/movies/popular")
+def popular_movies():
+    movies = tmdb.Movies()
+    response = movies.popular()
+    return jsonify(response['results'])
+
 @app.route("/api/search/tv", methods=["GET"])
 def search_tv_route():
     query = request.args.get("q", "")
     if not query:
         return jsonify([])
     results = search_tv_show(query)
+    return jsonify(results)
+
+@app.route("/api/movies/discover")
+def discover_movies():
+    genre = request.args.get('genre', '')
+    decade = request.args.get('decade', '')
+    rating_min = request.args.get('rating_min', '0')
+    rating_max = request.args.get('rating_max', '10')
+
+    discover = tmdb.Discover()
+    params = {
+        'vote_average.gte': rating_min,
+        'vote_average.lte': rating_max,
+        'vote_count.gte': 10  # avoids movies with 1 vote rated 10
+    }
+
+    if genre:
+        params['with_genres'] = genre
+    if decade:
+        params['primary_release_date.gte'] = f'{decade}-01-01'
+        params['primary_release_date.lte'] = f'{int(decade)+9}-12-31'
+
+    results = []
+    for page in range(1, 4):
+        params['page'] = page
+        response = discover.movie(**params)
+        results.extend(response['results'])
+
     return jsonify(results)
 
 
@@ -61,7 +95,12 @@ def get_movie_details(movie_id):
     response = movie.info()
     return response
 
+def get_popular_movies():
+    movies = tmdb.Movies()
+    response = movies.popular()
+    return response['results']
+
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

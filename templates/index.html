@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Talkies - Stream Movies & TV Shows</title>
     <link rel="stylesheet" href="/static/styles/main.css">
-    
 </head>
 <body>
     <header>
@@ -19,45 +18,48 @@
     
     <div class="hero">
         <h1>Unlimited Movies, TV Shows, and More</h1>
-        <a href="#" class="btn">Start Watching</a>
+        <a href="/movies" class="btn">Start Watching</a>
     </div>
     
-    <div class="content">
-        <div class="section-title">Trending Now</div>
-        <div class="movies-grid">
-            <div class="movie-card">
-                <img src="https://via.placeholder.com/200x300" alt="Movie 1">
-                <div class="movie-info">
-                    <div class="movie-title">Movie Title</div>
-                    <div class="movie-rating">⭐ 8.5/10</div>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="https://via.placeholder.com/200x300" alt="Movie 2">
-                <div class="movie-info">
-                    <div class="movie-title">Movie Title</div>
-                    <div class="movie-rating">⭐ 7.8/10</div>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="https://via.placeholder.com/200x300" alt="Movie 3">
-                <div class="movie-info">
-                    <div class="movie-title">Movie Title</div>
-                    <div class="movie-rating">⭐ 8.2/10</div>
-                </div>
-            </div>
-            <div class="movie-card">
-                <img src="https://via.placeholder.com/200x300" alt="Movie 4">
-                <div class="movie-info">
-                    <div class="movie-title">Movie Title</div>
-                    <div class="movie-rating">⭐ 9.0/10</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="content"></div>
     
     <footer>
         <p>&copy; 2026 Talkies. All rights reserved.</p>
     </footer>
+
+    <script>
+        fetch('/api/movies/popular')
+            .then(response => response.json())
+            .then(data => {
+                const trendingSection = document.createElement('section');
+                trendingSection.className = 'trending';
+                trendingSection.innerHTML = '<h2>Trending Now</h2><div class="trending-grid"></div>';
+                document.querySelector('.content').appendChild(trendingSection);
+                
+                const grid = trendingSection.querySelector('.trending-grid');
+                data.forEach(item => {
+                    const posterUrl = item.poster_path 
+                        ? `https://image.tmdb.org/t/p/w500${item.poster_path}` 
+                        : '/static/placeholder.jpg';
+                    const title = item.title || item.name || 'Untitled';
+                    const year = item.release_date 
+                        ? new Date(item.release_date).getFullYear() 
+                        : 'N/A';
+                    const card = document.createElement('a');
+                    card.className = 'trending-card';
+                    card.href = `/movieplayer/movie/${item.id}`;
+                    card.innerHTML = `
+                        <img src="${posterUrl}" alt="${title}" class="poster">
+                        <div class="movie-info">
+                            <h3>${title}</h3>
+                            <div class="year">${year}</div>
+                            <p class="overview">${item.overview || 'No description available.'}</p>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
 </body>
 </html>

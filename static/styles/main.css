@@ -125,6 +125,10 @@ nav a:hover {
     transition: transform 0.3s;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
+.movie-card {
+    text-decoration: none;
+    color: inherit;
+}
 
 .movie-card:hover, .show-card:hover {
     transform: scale(1.025);
@@ -271,4 +275,190 @@ footer {
     text-align: center;
     margin-top: 3rem;
     border-top: 1px solid #333;
+}
+.trending-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: #e50914 #1a1a1a;
+}
+
+.trending-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.trending-grid::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.trending-grid::-webkit-scrollbar-thumb {
+    background-color: #e50914;
+    border-radius: 3px;
+}
+
+.trending-card {
+    background-color: #1a1a1a;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+    text-decoration: none;
+    color: inherit;
+    flex: 0 0 200px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.trending-card:hover {
+    transform: scale(1.025);
+}
+
+.trending-card .poster {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.trending-card .movie-info {
+    padding: 0.85rem;
+}
+
+.trending-card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+}
+
+.trending-card .year {
+    color: #ccc;
+    font-size: 0.8rem;
+}
+.filters {
+    display: flex;
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto 1.5rem auto;
+    padding: 0 1rem;
+}
+
+.filters select {
+    flex: 1;
+    padding: 0.75rem;
+    background-color: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+}
+
+.filters select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #e50914;
+}
+
+.filters select option {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+.rating-filter {
+    flex: 1;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.slider-container {
+    position: relative;
+    height: 20px;
+    margin-top: 8px;
+}
+
+.slider-container input[type="range"] {
+    position: absolute;
+    width: 100%;
+    background: none;
+    pointer-events: none;
+    appearance: none;
+    height: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.slider-container input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #e50914;
+    pointer-events: all;
+    cursor: pointer;
+}
+
+.slider-container input[type="range"]::-webkit-slider-runnable-track {
+    background: #333;
+    height: 4px;
+    border-radius: 2px;
+}
+.rating-filter {
+  flex: 1;
+  padding: 0 0.5rem;
+}
+
+.rating-value {
+  font-size: 0.9rem;
+  color: #ccc;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.rating-track {
+  position: relative;
+  height: 6px;
+  background: #333;
+  border-radius: 3px;
+  margin: 1rem 0 0.5rem;
+}
+
+.rating-fill {
+  position: absolute;
+  height: 100%;
+  background: #e50914;
+  border-radius: 3px;
+}
+
+.rating-track input[type=range] {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  appearance: none;
+  background: none;
+  pointer-events: none;
+  margin: 0;
+}
+
+.rating-track input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #e50914;
+  border: 2px solid #0f0f0f;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.rating-track input[type=range]::-webkit-slider-runnable-track {
+  background: none;
+}
+
+.rating-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #666;
 }
